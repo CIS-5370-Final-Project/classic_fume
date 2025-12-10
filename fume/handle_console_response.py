@@ -1,6 +1,8 @@
 import globals as g
 from difflib import SequenceMatcher
 import helper_functions.print_verbosity as pv
+import datetime
+import os
 
 def check_similarity(line):
     for response in g.console_response_log:
@@ -28,4 +30,15 @@ def handle_console_response(proc):
             # TODO we need a way to better check if we have just sent a payload to the target
             if similarity is False and type(g.payload) is bytearray:
                 g.console_response_log[line] = g.payload
-                pv.normal_print("Found new console response (%d found)" % len(g.console_response_log.keys()))
+                count = len(g.console_response_log)
+                time_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                pv.normal_print("[%s] Found new console response (%d total)" % (time_str, count))
+
+                # NEW: Save response to folder
+                try:
+                    filename = f"console_response_{count}.txt"
+                    filepath = os.path.join(g.SESSION_LOG_DIRECTORY, filename)
+                    with open(filepath, "wb") as f:
+                        f.write(line)
+                except Exception as e:
+                    pv.print_error(f"Failed to save console response to file: {e}")

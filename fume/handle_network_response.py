@@ -2,6 +2,8 @@ from parsers.parse_initializer import ParseInitializer
 import helper_functions.determine_protocol_version as hpv
 import helper_functions.print_verbosity as pv
 import globals as g
+import datetime
+import os
 
 # Handle the network response -- log the request if 
 # the response was unique.
@@ -23,7 +25,18 @@ def handle_network_response(recv):
             # G_fields = str(parser.parser.G_fields) + str(parser.parser.H_fields)
             if G_fields not in g.network_response_log.keys():
                 g.network_response_log[G_fields] = g.payload
-                pv.normal_print("Found new network response (%d found)" % len(g.network_response_log.keys()))
+
+                count = len(g.network_response_log)
+                time_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                pv.normal_print("[%s] Found new network response (%d total)" % (time_str, count))
+
+                try:
+                    filename = f"network_response_{count}.bin"
+                    filepath = os.path.join(g.SESSION_LOG_DIRECTORY, filename)
+                    with open(filepath, "wb") as f:
+                        f.write(recv)
+                except Exception as e:
+                    pv.print_error(f"Failed to save network response to file: {e}")
 
             index +=  2 * (parser.parser.remainingLengthToInteger()) + 2 + len(parser.parser.remaining_length)
 

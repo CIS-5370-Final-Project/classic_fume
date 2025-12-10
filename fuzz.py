@@ -17,6 +17,8 @@ import globals as g
 import fume.markov_model as mm
 import fume.fuzzing_engine as fe
 import fume.run_target as rt
+import os
+import datetime
 
 # Calculate X1 from the construction intensity
 def calculate_X1():
@@ -58,6 +60,16 @@ def main():
     # Create crash directory if needed
     cl.create_crash_directory()
 
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    g.SESSION_LOG_DIRECTORY = "fume_session_" + timestamp
+    if not os.path.exists(g.SESSION_LOG_DIRECTORY):
+        try:
+            os.makedirs(g.SESSION_LOG_DIRECTORY)
+            print(f"Created session log directory: {g.SESSION_LOG_DIRECTORY}")
+        except OSError as e:
+            print(f"Error creating directory {g.SESSION_LOG_DIRECTORY}: {e}")
+            exit(-1)
+
     # Print fuzzing configuration
     pc.print_configuration()
 
@@ -68,7 +80,12 @@ def main():
     rt.run_target()
 
     # Run the fuzzing loop
-    fe.run_fuzzing_engine(markov_model)
+    try:
+        fe.run_fuzzing_engine(markov_model)
+    except KeyboardInterrupt:
+        print("Quitting ... ")
+        print("Total responses found during that iteration: %d" % (
+                    len(g.network_response_log) + len(g.console_response_log)))
 
 if __name__ == "__main__":
     main()
