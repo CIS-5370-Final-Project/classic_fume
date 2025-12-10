@@ -18,7 +18,6 @@ import handle_network_response as hnr
 import requests_queue as rq
 
 import helper_functions.print_verbosity as pv
-import helper_functions.determine_protocol_version as dpv
 import helper_functions.crash_logging as cl
 import helper_functions.get_payload_length as gpl
 

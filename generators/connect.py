@@ -1,6 +1,4 @@
 import random
-import binascii
-import string
 
 from packet import Packet
 from packet import packetTest

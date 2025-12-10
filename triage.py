@@ -9,7 +9,6 @@ import sys
 import time
 import subprocess
 import random
-from fume.run_target import check_connection 
 import globals as g
 import helper_functions.print_verbosity as pv
 import helper_functions.parse_config_file as pcf
