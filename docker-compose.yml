@@ -8,6 +8,15 @@ services:
       - ./fume_sync:/app/fume_sync
     restart: unless-stopped
 
+  classic-fuzzer2:
+    build: .
+    container_name: classic-fuzzer2
+    networks:
+      - fuzzer-network
+    volumes:
+      - ./fume_sync:/app/fume_sync
+    restart: unless-stopped
+
 networks:
   fuzzer-network:
     driver: bridge
