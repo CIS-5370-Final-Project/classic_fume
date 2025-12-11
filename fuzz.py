@@ -63,7 +63,8 @@ def main():
     cl.create_crash_directory()
 
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    g.SESSION_LOG_DIRECTORY = "fume_sync/fume_session_" + timestamp
+    container_id = os.environ.get("HOSTNAME", "local")[:12]
+    g.SESSION_LOG_DIRECTORY = f"fume_sync/fume_session_{container_id}_run_time_{g.RUN_DURATION}_minutes_{timestamp}"
     if not os.path.exists(g.SESSION_LOG_DIRECTORY):
         try:
             os.makedirs(g.SESSION_LOG_DIRECTORY)
