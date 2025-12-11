@@ -1,25 +1,28 @@
-import globals as g
 import random
 
-class Node():
+import globals as g
+
+
+class Node:
     def __init__(self, name):
         self.name = name
         self.next = []
         self.next_prob = []
 
-class Markov_Model():
+
+class Markov_Model:
     def __init__(self):
-        self.state_s0 = Node('S0')
+        self.state_s0 = Node("S0")
         self.state_s1 = Node("S1")
-        self.state_s2 = Node('S2')
-        self.state_sf = Node('Sf')
-        self.state_inject = Node('INJECT')
-        self.state_delete = Node('DELETE')
-        self.state_mutate = Node('MUTATE')
-        self.state_bof = Node('BOF')
-        self.state_nonbof = Node('NONBOF')
-        self.state_send = Node('SEND')
-        self.state_response_log = Node('RESPONSE_LOG')
+        self.state_s2 = Node("S2")
+        self.state_sf = Node("Sf")
+        self.state_inject = Node("INJECT")
+        self.state_delete = Node("DELETE")
+        self.state_mutate = Node("MUTATE")
+        self.state_bof = Node("BOF")
+        self.state_nonbof = Node("NONBOF")
+        self.state_send = Node("SEND")
+        self.state_response_log = Node("RESPONSE_LOG")
         self.state_connect = Node("CONNECT")
         self.state_connack = Node("CONNACK")
         self.state_publish = Node("PUBLISH")
@@ -38,16 +41,17 @@ class Markov_Model():
 
         self.current_state = self.state_s0
 
-        self.model_type = 'mutation'
+        self.model_type = "mutation"
 
     # Proceed to the next state in the Markov chain
     def next_state(self):
-        if self.current_state.name == 'Sf':
-            return 
-            
+        if self.current_state.name == "Sf":
+            return
+
         self.current_state = random.choices(
-            self.current_state.next, 
-            weights=self.current_state.next_prob)[0]
+            self.current_state.next, weights=self.current_state.next_prob
+        )[0]
+
 
 def initialize_markov_model():
     mm = Markov_Model()
@@ -62,9 +66,9 @@ def initialize_markov_model():
 
     # S1
     mm.state_s1.next = [
-        mm.state_connect, 
-        mm.state_connack, 
-        mm.state_publish, 
+        mm.state_connect,
+        mm.state_connack,
+        mm.state_publish,
         mm.state_puback,
         mm.state_pubrec,
         mm.state_pubrel,
@@ -72,12 +76,13 @@ def initialize_markov_model():
         mm.state_subscribe,
         mm.state_suback,
         mm.state_unsubscribe,
-        mm.state_suback,
+        mm.state_unsuback,
         mm.state_pingreq,
         mm.state_pingresp,
         mm.state_disconnect,
         mm.state_auth,
-        mm.state_s2]
+        mm.state_s2,
+    ]
 
     for ci in g.c:
         mm.state_s1.next_prob.append(ci - (ci * g.X1))
@@ -148,7 +153,7 @@ def initialize_markov_model():
         mm.state_inject,
         mm.state_delete,
         mm.state_mutate,
-        mm.state_send
+        mm.state_send,
     ]
     for di in g.d[:3]:
         mm.state_s2.next_prob.append(di - (di * g.X2))
