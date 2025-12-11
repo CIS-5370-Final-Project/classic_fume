@@ -56,7 +56,10 @@ TRIAGE_MAX_DEPTH = 3
 CRASH_DIRECTORY = "crashes"
 CRASH_FILENAME_PREFIX = "target"
 
-# Self-explanatory 
+# Self-explanatory
 MAXIMUM_PAYLOAD_LENGTH = 10000
 
 SESSION_LOG_DIRECTORY = ""
+
+# Run duration in minutes (0 = unlimited)
+RUN_DURATION = 0
