@@ -2,8 +2,7 @@ FROM eclipse-mosquitto:2.0.7
 
 USER root
 
-RUN apk add --no-cache python3 py3-pip bash && \
-    pip3 install colorama && \
+RUN apk add --no-cache python3 bash && \
     addgroup -g 1000 fuzzer && \
     adduser -D -u 1000 -G fuzzer fuzzer && \
     rm -f /docker-entrypoint.sh
