@@ -95,6 +95,9 @@ def parse_config_file(config):
         elif arg[0] == 'MAXIMUM_PAYLOAD_LENGTH':
             g.MAXIMUM_PAYLOAD_LENGTH = int(arg[1])
 
+        elif arg[0] == 'RUN_DURATION':
+            g.RUN_DURATION = float(arg[1])
+
         else:
             print("Unrecognized key in config file: %s" % arg[0])
             exit(-1)
